@@ -25,8 +25,11 @@ public interface ResourceClient {
     public Resource getById(@PathVariable Integer id);
 
     @PutMapping("/resource/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editResources(@RequestBody Resource resource, @PathVariable Integer id);
 
+    @DeleteMapping("/resource/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteResources( @PathVariable Integer id);
 
 }
