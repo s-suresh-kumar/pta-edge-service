@@ -1,26 +1,69 @@
 package com.cognizant.ptaedgeservice.controller;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.cognizant.ptaedgeservice.model.Users;
+import com.cognizant.ptaedgeservice.security.JwtConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class AuthController {
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loggedIn(Principal principal) {
-        return "Hello " + principal.getName() + "! Looks like you're logged in!";
+
+private final AuthenticationManager authenticationManager;
+private final JwtConverter converter;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtConverter converter) {
+        this.authenticationManager = authenticationManager;
+        this.converter = converter;
+        System.out.println("AuthController");
     }
-    @RequestMapping(value = "/needsRole", method = RequestMethod.GET)
-    public String authRoleGet(Principal principal) {
-        return "Hello " + principal.getName() + "! Looks like you have the PTA Member role";
+    @PostMapping("/authenticate")
+    public ResponseEntity<Map<String, String>> authenticate(@RequestBody Map<String, String> credentials) {
+
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(credentials.get("username"), credentials.get("password"));
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(authToken);
+
+            if (authentication.isAuthenticated()) {
+                String jwtToken = converter.getTokenFromUser((User) authentication.getPrincipal());
+
+                HashMap<String, String> map = new HashMap<>();
+                map.put("jwt_token", jwtToken);
+
+                return new ResponseEntity<>(map, HttpStatus.OK);
+            }
+
+        } catch (AuthenticationException ex) {
+            System.out.println(ex);
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @RequestMapping(value = "/needsRole", method = RequestMethod.POST)
-    public String authRolePost(Principal principal) {
-        return "Hello " + principal.getName() + "! Looks like you have the ADMIN role";
+    @PostMapping("/refresh_token")
+    public ResponseEntity<Map<String, String>> refreshToken(UsernamePasswordAuthenticationToken principal) {
+        User user = new User(principal.getName(), principal.getName(), principal.getAuthorities());
+        String jwtToken = converter.getTokenFromUser(user);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("jwt_token", jwtToken);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+
 
 
 

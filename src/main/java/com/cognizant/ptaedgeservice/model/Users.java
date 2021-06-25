@@ -1,9 +1,11 @@
 package com.cognizant.ptaedgeservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,8 +23,13 @@ public class Users {
     @OneToMany(mappedBy = "username", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Authorities> authorities;
 
-    public Users() {
+    public Users(String username, String password, List<GrantedAuthority> authorities) {
+        this(username,password,null,null);
+
+//                declare a set of authorities , then loop through granted authorities, every granted authorites make a authority.
+//        added to the set. set the authorites on the user.
     }
+
 
     public Users(String username, String password, String email, boolean enabled, Set<Authorities> authorities) {
         this.username = username;
@@ -30,6 +37,11 @@ public class Users {
         this.email = email;
         this.enabled = enabled;
         this.authorities = authorities;
+    }
+
+    public Users(String username, String password, String email, Set<Authorities> authorities) {
+        this(username,password,email,true,authorities);
+
     }
 
     public String getUsername() {
