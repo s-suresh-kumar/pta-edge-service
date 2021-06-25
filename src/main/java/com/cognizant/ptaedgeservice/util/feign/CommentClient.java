@@ -21,7 +21,7 @@ public interface CommentClient {
         @ResponseStatus(HttpStatus.OK)
         public Comment getById(@PathVariable Integer id);
 
-        @GetMapping("/get-by-resource-id")
+        @GetMapping("/comment/get-by-resource-id/{id}")
         @ResponseStatus(HttpStatus.OK)
         public List< Comment> getCommentByResourceId(@RequestParam Integer id);
 
