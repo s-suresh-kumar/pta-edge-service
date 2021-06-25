@@ -26,7 +26,10 @@ public interface CommentClient {
         public List< Comment> getCommentByResourceId(@RequestParam Integer id);
 
         @PutMapping
-        @ResponseStatus(HttpStatus.OK)
-        public void editComments(@RequestBody Comment comment, @PathVariable Integer id);
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void editComment(@RequestBody Comment comment, @PathVariable Integer id);
 
+        @DeleteMapping("/comment/{id}")
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void deleteComment( @PathVariable Integer id);
 }
