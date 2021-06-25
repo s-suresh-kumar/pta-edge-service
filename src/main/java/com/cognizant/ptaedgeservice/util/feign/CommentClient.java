@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "pta=-resource-commenting-service")
+@FeignClient(name = "pta-resource-commenting-service")
 public interface CommentClient {
 
         @GetMapping("/comment")
