@@ -14,7 +14,6 @@ import java.util.Set;
 @Table(name="users")
 public class Users {
     @Id
-
     private String username;
     @NotBlank(message="password Required")
     private String password;
@@ -26,10 +25,10 @@ public class Users {
     public Users(String username, String password, List<GrantedAuthority> authorities) {
         this(username,password,null,null);
 
-//                declare a set of authorities , then loop through granted authorities, every granted authorites make a authority.
-//        added to the set. set the authorites on the user.
     }
 
+    public Users() {
+    }
 
     public Users(String username, String password, String email, boolean enabled, Set<Authorities> authorities) {
         this.username = username;
