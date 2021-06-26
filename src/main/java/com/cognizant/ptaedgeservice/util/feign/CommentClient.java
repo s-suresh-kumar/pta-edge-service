@@ -12,6 +12,7 @@ import java.util.List;
 public interface CommentClient {
 
         @GetMapping("/comment")
+        @ResponseStatus(HttpStatus.OK)
         public List<Comment> getAllComments();
 
         @PostMapping("/comment")
