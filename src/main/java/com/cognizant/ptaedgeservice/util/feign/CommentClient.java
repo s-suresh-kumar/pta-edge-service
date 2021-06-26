@@ -26,7 +26,7 @@ public interface CommentClient {
         @ResponseStatus(HttpStatus.OK)
         public List< Comment> getCommentByResourceId(@RequestParam Integer id);
 
-        @PutMapping
+        @PutMapping("/comment/{id}")
         @ResponseStatus(HttpStatus.NO_CONTENT)
         public void editComment(@RequestBody Comment comment, @PathVariable Integer id);
 
