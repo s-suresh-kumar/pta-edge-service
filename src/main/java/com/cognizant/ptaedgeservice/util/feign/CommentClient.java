@@ -12,6 +12,7 @@ import java.util.List;
 public interface CommentClient {
 
         @GetMapping("/comment")
+        @ResponseStatus(HttpStatus.OK)
         public List<Comment> getAllComments();
 
         @PostMapping("/comment")
@@ -25,7 +26,7 @@ public interface CommentClient {
         @ResponseStatus(HttpStatus.OK)
         public List< Comment> getCommentByResourceId(@PathVariable Integer id);
 
-        @PutMapping
+        @PutMapping("/comment/{id}")
         @ResponseStatus(HttpStatus.NO_CONTENT)
         public void editComment(@RequestBody Comment comment, @PathVariable Integer id);
 
