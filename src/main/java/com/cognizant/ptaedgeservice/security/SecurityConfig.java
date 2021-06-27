@@ -41,10 +41,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "/refresh_token").authenticated()
+                .antMatchers(HttpMethod.GET, "/resource").permitAll()
+                .antMatchers(HttpMethod.POST, "/resource").permitAll()
+                .antMatchers(HttpMethod.PUT, "/resource").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/resource").permitAll()
+                .antMatchers(HttpMethod.PUT, "/comment").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/comment").permitAll()
+                .antMatchers(HttpMethod.POST, "/comment").permitAll()
+                .antMatchers(HttpMethod.PUT, "/comment").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/comment").permitAll()
                 .and()
-                .addFilter(new JwtRequestFilter(authenticationManager(), converter))
+//                .anyRequest().authenticated()
+                 .addFilter(new JwtRequestFilter(authenticationManager(), converter))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 
     @Override
@@ -76,13 +87,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Configure CORS globally versus
         // controller-by-controller.
         // Can be combined with @CrossOrigin.
+
         return new WebMvcConfigurer() {
 
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("http://localhost:3000")
                         .allowedMethods("*")
+                        .allowCredentials(true)
                         .allowedHeaders("*");
             }
         };

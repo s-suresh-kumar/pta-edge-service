@@ -32,16 +32,19 @@ public class JwtRequestFilter extends BasicAuthenticationFilter {
         if (authorization != null && authorization.startsWith("Bearer ")) {
 
             User user = converter.getUserFromToken(authorization);
+            System.out.println("User is !!!" +user);
             if (user == null) {
+                System.out.println("User is null    !!!!!!!" +user);
                 response.setStatus(403); // Forbidden
             } else {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                        user.getUsername(), null, user.getAuthorities());
-
+                        user.getUsername(),user.getPassword(), user.getAuthorities());
+                System.out.println(token);
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
         }
-
+        System.out.println("response  "+response);
+        System.out.println("Request:::"+request);
         chain.doFilter(request, response);
     }
 

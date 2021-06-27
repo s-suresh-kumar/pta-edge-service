@@ -51,7 +51,7 @@ public class ServiceLayer {
 
     public ResourcePlusComments findResource(Integer id) {
         Resource r = resourceClient.getById(id);
-
+        System.out.println("REsource :"+ r);
         // build a view model out of the album information...
         return buildResourceViewModel(r, id);
     }
@@ -59,7 +59,7 @@ public class ServiceLayer {
 
         // get all the comments
         List<Comment> comments = commentClient.getCommentByResourceId(id);
-
+        System.out.println("BuildService method    "+comments);
         // instantiate a view model so that I can return it
         ResourcePlusComments resourcePlusComments = new ResourcePlusComments();
         // put all the album information on the album view model
@@ -71,7 +71,7 @@ public class ServiceLayer {
 
         // add all the tracks for this album to the view model
         resourcePlusComments.setComments(comments);
-
+        System.out.println(resourcePlusComments);
         return resourcePlusComments;
     }
 
@@ -79,6 +79,7 @@ public class ServiceLayer {
         List <ResourcePlusComments> resourcesPlusCommentsList = new ArrayList<>();
 
         List<Resource> resources = resourceClient.getAllResources();
+        System.out.println("Edge Service Resources got GetAll Posts"+resources);
         for ( Resource r : resources) {
             ResourcePlusComments rp = buildResourceViewModel(r, r.getId());
             resourcesPlusCommentsList.add(rp);

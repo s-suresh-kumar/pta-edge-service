@@ -27,21 +27,21 @@ public class ResourcePlusCommentController {
 
     @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public ResourcePlusComments getPostById(@PathVariable int id) {
+    public ResourcePlusComments getPostById(@PathVariable Integer id) {
         return serviceLayer.findResource(id);
     }
 
 
     @RequestMapping(value = "/resource/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteResource(@PathVariable int id) {
+    public void deleteResource(@PathVariable Integer id) {
         serviceLayer.removePost(id);
     }
 
 
     @RequestMapping(value = "/resource/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePost(@PathVariable int id, @RequestBody ResourcePlusComments viewModel) {
+    public void updatePost(@PathVariable Integer id, @RequestBody ResourcePlusComments viewModel) {
         if (viewModel.getId() != id) {
             throw new RuntimeException("What are you tryin to do?!??!?!");
         }

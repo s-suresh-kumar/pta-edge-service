@@ -54,7 +54,7 @@ public class JwtConverter {
                         .map(i -> new SimpleGrantedAuthority(i))
                         .collect(Collectors.toList());
 
-                return new User(username, username, authorities);
+                return new User(username,username,authorities);
 
             } catch (JwtException e) {
                 System.out.println(e);
