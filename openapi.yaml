@@ -1,0 +1,348 @@
+openapi: 3.0.3
+info:
+  title: Api Documentation
+  description: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3333'
+    description: Inferred Url
+tags:
+  - name: auth-controller
+    description: Auth Controller
+  - name: resource-plus-comment-controller
+    description: Resource Plus Comment Controller
+paths:
+  /Signup:
+    post:
+      tags:
+        - auth-controller
+      summary: sinUpTheCredentials
+      operationId: sinUpTheCredentialsUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /authenticate:
+    post:
+      tags:
+        - auth-controller
+      summary: authenticate
+      operationId: authenticateUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /refresh_token:
+    post:
+      tags:
+        - auth-controller
+      summary: refreshToken
+      operationId: refreshTokenUsingPOST
+      parameters:
+        - name: authenticated
+          in: query
+          required: false
+          style: form
+          schema:
+            type: boolean
+        - name: 'authorities[0].authority'
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: credentials
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: details
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: name
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: principal
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /resource:
+    get:
+      tags:
+        - resource-plus-comment-controller
+      summary: getAllPosts
+      operationId: getAllPostsUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourcePlusComments'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - resource-plus-comment-controller
+      summary: createPostPlusComment
+      operationId: createPostPlusCommentUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePlusComments'
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResourcePlusComments'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/resource/{id}':
+    get:
+      tags:
+        - resource-plus-comment-controller
+      summary: getPostById
+      operationId: getPostByIdUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResourcePlusComments'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - resource-plus-comment-controller
+      summary: updatePost
+      operationId: updatePostUsingPUT
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePlusComments'
+      responses:
+        '201':
+          description: Created
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - resource-plus-comment-controller
+      summary: deleteResource
+      operationId: deleteResourceUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /testNonJson:
+    post:
+      tags:
+        - resource-plus-comment-controller
+      summary: doAStringThing
+      operationId: doAStringThingUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+components:
+  schemas:
+    Authorities:
+      title: Authorities
+      type: object
+      properties:
+        authority:
+          type: string
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+    Comment:
+      title: Comment
+      type: object
+      properties:
+        comment:
+          type: string
+        id:
+          type: integer
+          format: int32
+        resourceId:
+          type: integer
+          format: int32
+    ResourcePlusComments:
+      title: ResourcePlusComments
+      type: object
+      properties:
+        author:
+          type: string
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        content:
+          type: string
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+    Users:
+      title: Users
+      required:
+        - password
+      type: object
+      properties:
+        authorities:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Authorities'
+        email:
+          type: string
+        enabled:
+          type: boolean
+        password:
+          type: string
+        username:
+          type: string
