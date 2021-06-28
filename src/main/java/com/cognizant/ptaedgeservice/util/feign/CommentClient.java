@@ -18,11 +18,11 @@ public interface CommentClient {
         @PostMapping("/comment")
         public Comment createComment(@RequestBody Comment comment);
 
-        @GetMapping("/comment/{id}")
-        @ResponseStatus(HttpStatus.OK)
-        public Comment getById(@PathVariable Integer id);
+//        @GetMapping("/comment/{id}")
+//        @ResponseStatus(HttpStatus.OK)
+//        public Comment getById(@PathVariable Integer id);
 
-        @GetMapping("/comment/get/{id}")
+        @GetMapping("/comment/{id}")
         @ResponseStatus(HttpStatus.OK)
         public List< Comment> getCommentByResourceId(@PathVariable Integer id);
 

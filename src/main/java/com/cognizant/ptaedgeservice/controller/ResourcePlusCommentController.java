@@ -1,5 +1,6 @@
 package com.cognizant.ptaedgeservice.controller;
 
+import com.cognizant.ptaedgeservice.model.Resource;
 import com.cognizant.ptaedgeservice.service.ServiceLayer;
 import com.cognizant.ptaedgeservice.viewModel.ResourcePlusComments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class ResourcePlusCommentController {
     public List<ResourcePlusComments> getAllPosts() {
         return serviceLayer.getAllPosts();
     }
+//    @RequestMapping(value = "/resource", method = RequestMethod.GET)
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<ResourcePlusComments> getAllPosts() {
+//        return serviceLayer.getAllPosts();
+//    }
 
     @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -42,6 +48,9 @@ public class ResourcePlusCommentController {
     @RequestMapping(value = "/resource/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePost(@PathVariable Integer id, @RequestBody ResourcePlusComments viewModel) {
+        System.out.println(viewModel.getId());
+        viewModel.setId(id);
+
         if (viewModel.getId() != id) {
             throw new RuntimeException("What are you tryin to do?!??!?!");
         }

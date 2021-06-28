@@ -5,15 +5,20 @@ import com.cognizant.ptaedgeservice.model.Resource;
 import com.cognizant.ptaedgeservice.util.feign.CommentClient;
 import com.cognizant.ptaedgeservice.util.feign.ResourceClient;
 import com.cognizant.ptaedgeservice.viewModel.ResourcePlusComments;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RefreshScope
 public class ServiceLayer {
+
     private ResourceClient resourceClient;
+
     private CommentClient commentClient;
 
     @Autowired
@@ -22,6 +27,7 @@ public class ServiceLayer {
         this.commentClient = cc;
     }
     public ResourcePlusComments savePost(ResourcePlusComments viewModel) {
+        System.out.println("View Model!!!!!!" +viewModel);
 
         // Persist Resource
         Resource r = new Resource();
@@ -86,7 +92,17 @@ public class ServiceLayer {
         }
         return resourcesPlusCommentsList;
     }
-
+//    public List<Resource> getAllPosts() {
+//        List <ResourcePlusComments> resourcesPlusCommentsList = new ArrayList<>();
+//
+//        List<Resource> resources = resourceClient.getAllResources();
+//        System.out.println("Edge Service Resources got GetAll Posts"+resources);
+////        for ( Resource r : resources) {
+////            ResourcePlusComments rp = buildResourceViewModel(r, r.getId());
+////            resourcesPlusCommentsList.add(rp);
+////        }
+//        return resources;
+//    }
 
     public void updatePost(ResourcePlusComments viewModel) {
         // Create an Album object from the AlbumViewModel
@@ -95,6 +111,7 @@ public class ServiceLayer {
         r.setId(viewModel.getId());
         r.setTitle(viewModel.getTitle());
         r.setContent(viewModel.getContent());
+        r.setAuthor(viewModel.getAuthor());
 
 
         // Perform update of resource info
